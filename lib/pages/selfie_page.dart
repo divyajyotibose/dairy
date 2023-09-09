@@ -19,6 +19,7 @@ class selfie_page extends StatefulWidget {
 }
 
 class _selfie_pageState extends State<selfie_page> {
+  Appstyle AppStyle = Appstyle();
   List<CameraDescription>?  cameras;
   late CameraController _cam;
   late Future<void> _initializeControllerFuture;
@@ -37,21 +38,25 @@ class _selfie_pageState extends State<selfie_page> {
     super.dispose();
   }
   photo_button()  {
-    return IconButton(onPressed: () async {
-      try {
-        // Ensure that the camera is initialized.
-        await _initializeControllerFuture;
+    return Positioned(
+      bottom: global_var.ratio*30,
+      left: global_var.width*0.42,
+      child: IconButton(onPressed: () async {
+        try {
+          // Ensure that the camera is initialized.
+          await _initializeControllerFuture;
 
-        // Attempt to take a picture and then get the location
-        // where the image file is saved.
-        image = await _cam.takePicture();
-        update();
+          // Attempt to take a picture and then get the location
+          // where the image file is saved.
+          image = await _cam.takePicture();
+          update();
 
-      } catch (e) {
-        // If an error occurs, log the error to the console.
-        print(e);
-      }
-    }, icon: Icon(Icons.motion_photos_on_rounded,size: 50,));
+        } catch (e) {
+          // If an error occurs, log the error to the console.
+          print(e);
+        }
+      }, icon: Icon(Icons.motion_photos_on_rounded,size: global_var.ratio*35,color: AppStyle.mainColor,)),
+    );
   }
 
   @override
@@ -63,9 +68,14 @@ class _selfie_pageState extends State<selfie_page> {
             if(snapshot.connectionState==ConnectionState.done){
               return Stack(
                 children: [
-                  Center(child: CameraPreview(_cam)),
-                  Positioned(child:photo_button() ,bottom: 0,left: global_var.width/2,right: global_var.width/2,),
-
+                  Container(
+                      decoration: BoxDecoration(
+                        color: AppStyle.accentColor,
+                      ),
+                      child: Center(
+                        child: CameraPreview(_cam,),
+                      )),
+                  photo_button(),
                 ],
               );
             }

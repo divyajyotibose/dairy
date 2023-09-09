@@ -33,6 +33,11 @@ class _view_reportsState extends State<view_reports> {
       type: CoolAlertType.success,
       width: 20.0,
       text: "You have logged out ",
+      confirmBtnColor: AppStyle.mainColor,
+      confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+      backgroundColor: AppStyle.accentColor,
+      titleTextStyle: TextStyle(color: AppStyle.contentColor),
+      textTextStyle: TextStyle(color: AppStyle.contentColor),
     );
   }
 
@@ -120,7 +125,12 @@ class _view_reportsState extends State<view_reports> {
         type: CoolAlertType.info,
         width: 20.0,
         text: "There are $a new alerts",
-        title: "Update");
+        title: "Update",
+      confirmBtnColor: AppStyle.mainColor,
+      confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+      backgroundColor: AppStyle.accentColor,
+      titleTextStyle: TextStyle(color: AppStyle.contentColor),
+      textTextStyle: TextStyle(color: AppStyle.contentColor),);
     backref.doc("reportCount").update({"alerts": 0});
     return allData;
   }

@@ -46,6 +46,12 @@ class _base_screenState extends State<base_screen> {
         confirmBtnText: "Proceed",
         cancelBtnText: "Go Back",
         showCancelBtn: true,
+        confirmBtnColor: AppStyle.mainColor,
+        confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+        backgroundColor: AppStyle.accentColor,
+        cancelBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+        titleTextStyle: TextStyle(color: AppStyle.contentColor),
+          textTextStyle: TextStyle(color: AppStyle.contentColor)
       );
     }
   }

@@ -61,7 +61,12 @@ class _submit_report_pageState extends State<submit_report_page>
           type: CoolAlertType.warning,
           width: 20.0,
           text: "Please fill all fields",
-          title: "Warning!!");
+          title: "Warning!!",
+        confirmBtnColor: AppStyle.mainColor,
+        confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+      backgroundColor: AppStyle.accentColor,
+          titleTextStyle: TextStyle(color: AppStyle.contentColor),
+          textTextStyle: TextStyle(color: AppStyle.contentColor));
     } else {
       await collRef.doc(mobile.text).set({
         "name": name.text,
@@ -318,6 +323,11 @@ class _submit_report_pageState extends State<submit_report_page>
             context: context,
             type: CoolAlertType.warning,
             text: "Please enter your phone number",
+            confirmBtnColor: AppStyle.mainColor,
+            confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+            backgroundColor: AppStyle.accentColor,
+              titleTextStyle: TextStyle(color: AppStyle.contentColor),
+              textTextStyle: TextStyle(color: AppStyle.contentColor),
           );
         } else {
           Navigator.push(
