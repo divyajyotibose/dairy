@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/pages/selfie_page.dart';
 import 'package:dairy/widgets/local_notifs.dart';
+import 'package:dairy/widgets/usefulButton.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
@@ -65,7 +66,7 @@ class _submit_report_pageState extends State<submit_report_page>
         confirmBtnColor: AppStyle.mainColor,
         confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
       backgroundColor: AppStyle.accentColor,
-          titleTextStyle: TextStyle(color: AppStyle.contentColor),
+          titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
           textTextStyle: TextStyle(color: AppStyle.contentColor));
     } else {
       await collRef.doc(mobile.text).set({
@@ -100,20 +101,6 @@ class _submit_report_pageState extends State<submit_report_page>
     }
   }
 
-  Widget submit_button() {
-    return ElevatedButton(
-      onPressed: send_data,
-      child: Text(
-        "Submit",
-        style: TextStyle(color: AppStyle.contentColor, fontSize: 18),
-      ),
-      style: ElevatedButton.styleFrom(
-          backgroundColor: AppStyle.mainColor,
-          shape: StadiumBorder(),
-          padding: EdgeInsets.all(15)),
-    );
-  }
-
   Widget selection_menu() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -123,17 +110,17 @@ class _submit_report_pageState extends State<submit_report_page>
       child: DropdownButton(
         value: valueChoose,
         isExpanded: true,
-        icon: Icon(Icons.arrow_drop_down),
+        icon: Icon(Icons.arrow_drop_down,color: AppStyle.mainColor,),
+        dropdownColor: AppStyle.bodyColor,
         onChanged: (newValue) {
           setState(() {
             valueChoose = newValue.toString();
           });
         },
         items: listItem.map((valueItem) {
-          return DropdownMenuItem(value: valueItem, child: Text(valueItem));
+          return DropdownMenuItem(value: valueItem, child: Text(valueItem,style: TextStyle(color: AppStyle.contentColor),));
         }).toList(),
         underline: SizedBox(),
-        focusColor: AppStyle.bodyColor,
       ),
     );
   }
@@ -240,54 +227,69 @@ class _submit_report_pageState extends State<submit_report_page>
             decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    // color: color_palette().light,
+                    color: AppStyle.contentColor,
                     blurRadius: 10,
                   )
                 ],
                 color: AppStyle.bodyColor,
-                borderRadius: const BorderRadius.all(Radius.circular(10))),
+                borderRadius: const BorderRadius.all(Radius.circular(20))),
             padding: EdgeInsets.symmetric(
-                vertical: global_var.height * 0.05,
+                vertical: 0,
                 horizontal: global_var.width * 0.15),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                form_inputs(
-                    controller: name,
-                    label_text: "Name",
-                    hint_text: "Enter your name",
-                    pre_icon: const Icon(Icons.person)),
-                const SizedBox(
-                  height: 10,
-                ),
-                form_inputs(
-                    controller: email,
-                    label_text: "Email id",
-                    hint_text: "Enter your email id",
-                    pre_icon: const Icon(Icons.mail)),
-                const SizedBox(
-                  height: 10,
-                ),
-                PhoneFieldHint(
-                  controller: mobile,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                selection_menu(),
-                const SizedBox(
-                  height: 10,
-                ),
-                description_box(),
-                const SizedBox(
-                  height: 10,
-                ),
-                take_photo(),
-                SizedBox(
-                  height: 10,
-                ),
-                submit_button(),
-              ],
+            child: Center(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  form_inputs(
+                      controller: name,
+                      label_text: "Name",
+                      hint_text: "Enter your name",
+                      pre_icon: const Icon(Icons.person)),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  form_inputs(
+                      controller: email,
+                      label_text: "Email id",
+                      hint_text: "Enter your email id",
+                      pre_icon: const Icon(Icons.mail)),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Theme(
+                    data: ThemeData(
+                      textSelectionTheme: TextSelectionThemeData(
+                        cursorColor: AppStyle.contentColor
+                      ),
+                      inputDecorationTheme: InputDecorationTheme(
+                        suffixIconColor: AppStyle.mainColor,
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppStyle.mainColor),
+                        ),
+                      )
+                    ),
+                    child: PhoneFieldHint(
+                      controller: mobile,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  selection_menu(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  description_box(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  take_photo(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  usefulButton(fn: send_data, label: "Submit"),
+                ],
+              ),
             ),
           ),
         ),
@@ -326,7 +328,7 @@ class _submit_report_pageState extends State<submit_report_page>
             confirmBtnColor: AppStyle.mainColor,
             confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
             backgroundColor: AppStyle.accentColor,
-              titleTextStyle: TextStyle(color: AppStyle.contentColor),
+              titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
               textTextStyle: TextStyle(color: AppStyle.contentColor),
           );
         } else {
@@ -340,7 +342,7 @@ class _submit_report_pageState extends State<submit_report_page>
           );
         }
       },
-      child: Icon(Icons.camera_alt_outlined),
+      child: Icon(Icons.camera_alt_outlined,size: 30,),
       style: TextButton.styleFrom(
           backgroundColor: AppStyle.mainColor,
           shape: CircleBorder(),

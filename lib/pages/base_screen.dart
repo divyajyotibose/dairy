@@ -30,12 +30,12 @@ class _base_screenState extends State<base_screen> {
       setState(() {
         _selectedIndex = currentIndex;
       });
-    } else if (currentIndex == 2) {
+    } else if (currentIndex == 2 && _selectedIndex!=2) {
       CoolAlert.show(
         context: context,
         type: CoolAlertType.warning,
         width: 20.0,
-        title: "Restricted Access!",
+        title: "Restricted Access !",
         text: "For authorised personnel only",
         onConfirmBtnTap: () {
           setState(() {
@@ -50,7 +50,7 @@ class _base_screenState extends State<base_screen> {
         confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
         backgroundColor: AppStyle.accentColor,
         cancelBtnTextStyle: TextStyle(color: AppStyle.contentColor),
-        titleTextStyle: TextStyle(color: AppStyle.contentColor),
+        titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
           textTextStyle: TextStyle(color: AppStyle.contentColor)
       );
     }
@@ -73,7 +73,13 @@ class _base_screenState extends State<base_screen> {
               duration: Duration(milliseconds: 200),
               child: page,
               transitionBuilder: (Widget child, Animation<double> animation) {
-                return ScaleTransition(scale: animation, child: child);
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
               }),
         ),
       ),

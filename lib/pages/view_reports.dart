@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/format/color_palette.dart';
 import 'package:dairy/global_var.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dairy/widgets/auth.dart';
@@ -16,6 +19,7 @@ class view_reports extends StatefulWidget {
 }
 
 class _view_reportsState extends State<view_reports> {
+  Uint8List? data;
   Appstyle AppStyle = Appstyle();
   final User? user = auth().currentUser;
   List? allData;
@@ -36,7 +40,7 @@ class _view_reportsState extends State<view_reports> {
       confirmBtnColor: AppStyle.mainColor,
       confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
       backgroundColor: AppStyle.accentColor,
-      titleTextStyle: TextStyle(color: AppStyle.contentColor),
+      titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
       textTextStyle: TextStyle(color: AppStyle.contentColor),
     );
   }
@@ -129,7 +133,7 @@ class _view_reportsState extends State<view_reports> {
       confirmBtnColor: AppStyle.mainColor,
       confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
       backgroundColor: AppStyle.accentColor,
-      titleTextStyle: TextStyle(color: AppStyle.contentColor),
+      titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
       textTextStyle: TextStyle(color: AppStyle.contentColor),);
     backref.doc("reportCount").update({"alerts": 0});
     return allData;
@@ -158,6 +162,17 @@ class _view_reportsState extends State<view_reports> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          FutureBuilder(
+            future: get_pic(ph),
+              builder: (context,snapshot){
+              if(snapshot.connectionState==ConnectionState.done){
+                if(snapshot.hasData){
+                  return Image(image: MemoryImage(data!),);
+                }
+              }
+              return Container(child: Icon(Icons.person),color: AppStyle.bodyColor,);
+
+              }),
           report_lines("Name", name),
           report_lines("Phone no.", ph),
           report_lines("Emai Id", email),
@@ -194,5 +209,17 @@ class _view_reportsState extends State<view_reports> {
         )
       ],
     );
+  }
+
+  get_pic(String mobile) async{
+    final storageRef = FirebaseStorage.instance.ref();
+    final pathReference = storageRef.child("files/$mobile.jpeg");
+    try {
+      const oneMegabyte = 1024 * 1024;
+      data = await pathReference.getData(oneMegabyte);
+      return data;
+    } on FirebaseException catch (e) {
+      // Handle any errors.
+    }
   }
 }

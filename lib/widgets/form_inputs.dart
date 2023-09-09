@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dairy/format/color_palette.dart';
 
 class form_inputs extends StatelessWidget {
+  Appstyle AppStyle=Appstyle();
   TextEditingController controller;
   String label_text, hint_text;
   Icon? pre_icon;
@@ -21,11 +22,18 @@ class form_inputs extends StatelessWidget {
         controller: controller,
         maxLines: 5,
         minLines: 1,
+        cursorColor: AppStyle.contentColor,
         decoration: InputDecoration(
           labelText: label_text,
           hintText: hint_text,
           prefixIcon: pre_icon,
-          fillColor: Colors.black,
+          fillColor: AppStyle.accentColor,
+          labelStyle: TextStyle(color: AppStyle.contentColor),
+          hintStyle: TextStyle(color: AppStyle.mainColor),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: AppStyle.mainColor),
+          ),
+          prefixIconColor: AppStyle.mainColor,
         ),
       ),
     );

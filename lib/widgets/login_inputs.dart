@@ -3,6 +3,7 @@ import 'package:dairy/format/color_palette.dart';
 
 class login_inputs extends StatelessWidget {
   TextEditingController controller;
+  Appstyle AppStyle=Appstyle();
   bool visible;
   String label_text, hint_text;
   Icon? pre_icon;
@@ -21,10 +22,15 @@ class login_inputs extends StatelessWidget {
       obscureText: !visible,
       maxLines: 1,
       minLines: 1,
+      cursorColor: AppStyle.contentColor,
       decoration: InputDecoration(
+
         labelText: label_text,
+        labelStyle: TextStyle(color: AppStyle.contentColor),
         hintText: hint_text,
+        hintStyle: TextStyle(color: AppStyle.mainColor),
         prefixIcon: pre_icon,
+        prefixIconColor: AppStyle.mainColor,
         enabledBorder: OutlineInputBorder(
           borderSide: Appstyle().borderSide,
         ),

@@ -40,8 +40,8 @@ class _selfie_pageState extends State<selfie_page> {
   photo_button()  {
     return Positioned(
       bottom: global_var.ratio*30,
-      left: global_var.width*0.42,
-      child: IconButton(onPressed: () async {
+      left: global_var.width*0.44,
+      child: FloatingActionButton(onPressed: () async {
         try {
           // Ensure that the camera is initialized.
           await _initializeControllerFuture;
@@ -55,7 +55,10 @@ class _selfie_pageState extends State<selfie_page> {
           // If an error occurs, log the error to the console.
           print(e);
         }
-      }, icon: Icon(Icons.motion_photos_on_rounded,size: global_var.ratio*35,color: AppStyle.mainColor,)),
+      }, child: Center(child: Icon(Icons.motion_photos_on_rounded,size: global_var.ratio*28,color: AppStyle.mainColor,)),
+      backgroundColor: AppStyle.accentColor,
+      ),
+
     );
   }
 
@@ -76,11 +79,12 @@ class _selfie_pageState extends State<selfie_page> {
                         child: CameraPreview(_cam,),
                       )),
                   photo_button(),
+
                 ],
               );
             }
             else{
-              return Center(child: CircularProgressIndicator(),);
+              return Container(color:AppStyle.accentColor,child: Center(child: CircularProgressIndicator(color: AppStyle.contentColor,),));
             }
           }
       ),
@@ -88,22 +92,28 @@ class _selfie_pageState extends State<selfie_page> {
   }
 
   update()async{
+    CoolAlert.show(
+      context: context,
+      type: CoolAlertType.success,
+      width:20.0,
+      text: "Selfie taken successfully",
+      onConfirmBtnTap: (){
+        Navigator.pop(context);
+      },
+      confirmBtnColor: AppStyle.mainColor,
+      confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+      backgroundColor: AppStyle.accentColor,
+      titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
+      textTextStyle: TextStyle(color: AppStyle.contentColor),
+    );
+
     setState(() {
       final file=File(image.path!);
       final path="files/${widget.mobile}";
       final reference=FirebaseStorage.instance.ref().child(path);
       reference.putFile(file);
     });
-      CoolAlert.show(
-          context: context,
-          type: CoolAlertType.success,
-          width:20.0,
-          text: "Selfie taken successfully",
-        onConfirmBtnTap: (){
-            Navigator.pop(context);
-        }
-      );
-      
+
 
   }
 }

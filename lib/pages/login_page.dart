@@ -2,6 +2,7 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/format/color_palette.dart';
 import 'package:dairy/global_var.dart';
 import 'package:dairy/widgets/login_inputs.dart';
+import 'package:dairy/widgets/usefulButton.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dairy/widgets/auth.dart';
@@ -25,30 +26,21 @@ class _login_pageState extends State<login_page> {
       await auth()
           .signInWithEmailAndPassword(email: id.text, password: pwd.text);
     } on FirebaseAuthException catch (e) {
-      setState(() {
-        pwd.text = "";
-        errorMessage = e.message;
-      });
+      // setState(() {
+      //   pwd.text = "";
+      //   errorMessage = e.message;
+      // });
+      CoolAlert.show(context: context,
+          type: CoolAlertType.error,
+          text:"Invalid username or password" ,
+          confirmBtnColor: AppStyle.mainColor,
+          confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+          backgroundColor: AppStyle.accentColor,
+          titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
+          textTextStyle: TextStyle(color: AppStyle.contentColor));
     }
   }
 
-  Widget _errorMessage() {
-    return Text(errorMessage == "" ? " " : "Humm ? $errorMessage");
-  }
-
-  Widget _loginButton() {
-    return ElevatedButton(
-      onPressed: signInWithEmailAndPassword,
-      child: Text(
-        "Login",
-        style: TextStyle(color: AppStyle.contentColor, fontSize: 18),
-      ),
-      style: ElevatedButton.styleFrom(
-          shape: StadiumBorder(),
-          backgroundColor: AppStyle.mainColor,
-          padding: EdgeInsets.all(15)),
-    );
-  }
 
   @override
   void initState() {
@@ -77,54 +69,52 @@ class _login_pageState extends State<login_page> {
   @override
   Widget build(BuildContext context) {
     global_var.context = context;
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-      child: Center(
-        child: Container(
-          height: global_var.height * 0.7,
-          decoration: BoxDecoration(
-              // border: Border.all(width: 15, color: color_palette().form_border),
-              boxShadow: [
-                BoxShadow(
-                  // color: color_palette().light,
-                  blurRadius: 10,
-                )
-              ],
-              color: AppStyle.bodyColor,
-              borderRadius: const BorderRadius.all(Radius.circular(10))),
-          padding: EdgeInsets.symmetric(
-              vertical: global_var.height * 0.06,
-              horizontal: global_var.width * 0.11),
-          child: Center(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                logo(),
-                SizedBox(
-                  height: 20,
-                ),
-                login_inputs(
-                  controller: id,
-                  label_text: "id",
-                  hint_text: "Enter email id",
-                  pre_icon: Icon(Icons.mail),
-                  visible: true,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                login_inputs(
-                  controller: pwd,
-                  label_text: "password",
-                  hint_text: "Enter your password",
-                  pre_icon: Icon(Icons.key),
-                  visible: false,
-                ),
-                SizedBox(height: 15),
-                // _errorMessage(),
-                _loginButton(),
-              ],
-            ),
+    return Center(
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 0,horizontal: 20),
+        height: global_var.height * 0.65,
+        decoration: BoxDecoration(
+            // border: Border.all(width: 15, color: color_palette().form_border),
+            boxShadow: [
+              BoxShadow(
+                color:AppStyle.contentColor,
+                blurRadius: 10,
+              )
+            ],
+            color: AppStyle.bodyColor,
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
+        padding: EdgeInsets.symmetric(
+            vertical: global_var.height * 0.06,
+            horizontal: global_var.width * 0.11),
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              logo(),
+              SizedBox(
+                height: 20,
+              ),
+              login_inputs(
+                controller: id,
+                label_text: "id",
+                hint_text: "Enter email id",
+                pre_icon: Icon(Icons.mail),
+                visible: true,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              login_inputs(
+                controller: pwd,
+                label_text: "password",
+                hint_text: "Enter your password",
+                pre_icon: Icon(Icons.key),
+                visible: false,
+              ),
+              SizedBox(height: 15),
+              // _errorMessage(),
+              usefulButton(fn: signInWithEmailAndPassword, label: "Login"),
+            ],
           ),
         ),
       ),
