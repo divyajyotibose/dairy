@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "635062408481",
+    "project_id": "fir-auth-244a3",
+    "storage_bucket": "fir-auth-244a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635062408481:android:e72d5f12561e267799da60",
+        "android_client_info": {
+          "package_name": "com.example.dairy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635062408481-tsqktmlq5gtf323ca322omi6thgjgt47.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4zR85GKx7pUynAoj_xSzUGXNP_2VrQoA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635062408481-sb0bapt2eekfh6rhlf83slmpkih9no0e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
