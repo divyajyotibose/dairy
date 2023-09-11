@@ -20,6 +20,7 @@ class view_reports extends StatefulWidget {
 
 class _view_reportsState extends State<view_reports> {
   Uint8List? data;
+  String? imageURL;
   Appstyle AppStyle = Appstyle();
   final User? user = auth().currentUser;
   List? allData;
@@ -123,7 +124,6 @@ class _view_reportsState extends State<view_reports> {
     var b = data[0];
     int a = b["alerts"];
     print(b);
-    // local_notifs().show_notifs(title: "DAIRY",body: "There are $a new alerts");
     CoolAlert.show(
         context: context,
         type: CoolAlertType.info,
@@ -149,6 +149,8 @@ class _view_reportsState extends State<view_reports> {
     String type = a["type"];
     String details = a["details"];
     String ph = a["ph"];
+    String time=a["Time"];
+    String date=a["Date"];
     return Container(
       margin: EdgeInsets.symmetric(vertical: 12, horizontal: 5),
       padding: EdgeInsets.symmetric(
@@ -158,30 +160,40 @@ class _view_reportsState extends State<view_reports> {
       decoration: BoxDecoration(
           color: AppStyle.bodyColor,
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          boxShadow: [BoxShadow(blurRadius: 10)]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          FutureBuilder(
-            future: get_pic(ph),
-              builder: (context,snapshot){
-              if(snapshot.connectionState==ConnectionState.done){
-                if(snapshot.hasData){
-                  return Image(image: MemoryImage(data!),);
-                }
-              }
-              return Container(child: Icon(Icons.person),color: AppStyle.bodyColor,);
+          boxShadow: [BoxShadow(blurRadius: 10,color: AppStyle.contentColor)]),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+              Text(date,style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w500),),
+              Text(time,style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w500)),
+            ],),
+            FutureBuilder(
+              future: get_pic(ph),
+                builder: (context,snapshot){
+                if(snapshot.connectionState==ConnectionState.done){
+                  if(snapshot.hasData){
+                    return CircleAvatar(backgroundImage: NetworkImage(snapshot.data.toString()),radius: global_var.ratio*26,backgroundColor: AppStyle.mainColor,);
+                  }
 
-              }),
-          report_lines("Name", name),
-          report_lines("Phone no.", ph),
-          report_lines("Emai Id", email),
-          report_lines("Address", addr),
-          report_lines("Latitude", lat),
-          report_lines("Longitude", lng),
-          report_lines("Type of Incdient", type),
-          report_lines("Description", details),
-        ],
+                }
+                return CircleAvatar(child: Icon(Icons.person,size:  global_var.ratio*26,color: AppStyle.bodyColor,),radius:  global_var.ratio*26,backgroundColor: AppStyle.mainColor,);
+
+                }),
+            SizedBox(height: 10,),
+            report_lines("Name", name),
+            report_lines("Phone no.", ph),
+            report_lines("Emai Id", email),
+            report_lines("Address", addr),
+            report_lines("Latitude", lat),
+            report_lines("Longitude", lng),
+            report_lines("Type of Incdient", type),
+            report_lines("Description", details),
+          ],
+        ),
       ),
     );
   }
@@ -196,7 +208,7 @@ class _view_reportsState extends State<view_reports> {
               "$label : ",
               style: AppStyle.heavyText,
             ),
-            Flexible(
+            Expanded(
                 child: Text(
               "$data",
               style: AppStyle.normalText,
@@ -212,14 +224,17 @@ class _view_reportsState extends State<view_reports> {
   }
 
   get_pic(String mobile) async{
-    final storageRef = FirebaseStorage.instance.ref();
-    final pathReference = storageRef.child("files/$mobile.jpeg");
+    // CoolAlert.show(context: context, type: CoolAlertType.info,title: "get_pic()");
+
     try {
-      const oneMegabyte = 1024 * 1024;
-      data = await pathReference.getData(oneMegabyte);
-      return data;
+      await firebaseImage(mobile);
+      return imageURL;
     } on FirebaseException catch (e) {
-      // Handle any errors.
     }
+  }
+  Future<void> firebaseImage(String mobile) async {
+    print(mobile);
+    imageURL = await FirebaseStorage.instance.ref().child("files/$mobile").getDownloadURL();
+
   }
 }

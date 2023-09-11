@@ -89,6 +89,7 @@ class _base_screenState extends State<base_screen> {
           iconSize: 30,
           type: BottomNavigationBarType.shifting,
           selectedItemColor: AppStyle.contentColor,
+          unselectedItemColor: AppStyle.bodyColor,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(

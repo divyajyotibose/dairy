@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/format/color_palette.dart';
 import 'package:dairy/global_var.dart';
+import 'package:dairy/pages/submit_report_page.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 class selfie_page extends StatefulWidget {
@@ -41,7 +42,9 @@ class _selfie_pageState extends State<selfie_page> {
     return Positioned(
       bottom: global_var.ratio*30,
       left: global_var.width*0.44,
-      child: FloatingActionButton(onPressed: () async {
+      child: FloatingActionButton(
+        heroTag: "btn2",
+        onPressed: () async {
         try {
           // Ensure that the camera is initialized.
           await _initializeControllerFuture;
@@ -79,6 +82,7 @@ class _selfie_pageState extends State<selfie_page> {
                         child: CameraPreview(_cam,),
                       )),
                   photo_button(),
+                  backButton(),
 
                 ],
               );
@@ -97,9 +101,6 @@ class _selfie_pageState extends State<selfie_page> {
       type: CoolAlertType.success,
       width:20.0,
       text: "Selfie taken successfully",
-      onConfirmBtnTap: (){
-        Navigator.pop(context);
-      },
       confirmBtnColor: AppStyle.mainColor,
       confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
       backgroundColor: AppStyle.accentColor,
@@ -115,5 +116,20 @@ class _selfie_pageState extends State<selfie_page> {
     });
 
 
+  }
+
+  backButton() {
+    return Positioned(
+        bottom: global_var.ratio*30,
+        left: 20,
+        child:FloatingActionButton(
+          heroTag: "btn1",
+          backgroundColor: AppStyle.accentColor,
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back,color: AppStyle.mainColor,size: 30,),
+        )
+    );
   }
 }

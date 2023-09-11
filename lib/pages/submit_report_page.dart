@@ -32,6 +32,7 @@ class _submit_report_pageState extends State<submit_report_page>
   TextEditingController email = TextEditingController();
   TextEditingController details = TextEditingController();
   TextEditingController mobile = TextEditingController();
+
   CollectionReference collRef = FirebaseFirestore.instance.collection("client");
   CollectionReference backref =
       FirebaseFirestore.instance.collection("backend");
@@ -50,7 +51,7 @@ class _submit_report_pageState extends State<submit_report_page>
   CameraDescription? cam;
   var image;
 
-  String? ip, valueChoose;
+  String? ip, valueChoose,date,time;
   Future<void> send_data() async {
     if (name.text == "" ||
         email.text == "" ||
@@ -69,13 +70,15 @@ class _submit_report_pageState extends State<submit_report_page>
           titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
           textTextStyle: TextStyle(color: AppStyle.contentColor));
     } else {
+      get_time();
       await collRef.doc(mobile.text).set({
         "name": name.text,
         "email": email.text,
         "details": details.text,
         "type": valueChoose,
         "ip": ip,
-        "Time": get_time(),
+        "Time": time,
+        "Date":date,
         "latitude": _currentPosition?.latitude ?? "",
         "longitude": _currentPosition?.longitude ?? "",
         "address": _currentAddress ?? "",
@@ -86,8 +89,12 @@ class _submit_report_pageState extends State<submit_report_page>
             context: context,
             type: CoolAlertType.success,
             width: 20.0,
-            title: "Report Submitted",
-            text: "");
+            text: "Report submitted successfully",
+            confirmBtnColor: AppStyle.mainColor,
+            confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+            backgroundColor: AppStyle.accentColor,
+            titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
+            textTextStyle: TextStyle(color: AppStyle.contentColor));
         setState(() {
           name.text = "";
           email.text = "";
@@ -313,8 +320,8 @@ class _submit_report_pageState extends State<submit_report_page>
   get_time() {
     String cdate = DateFormat("yyyy-MM-dd").format(DateTime.now());
     String tdata = DateFormat("HH:mm:ss").format(DateTime.now());
-    String datetime = "$cdate, $tdata";
-    return datetime;
+    date = cdate;
+    time=tdata;
   }
 
   Widget take_photo() {
@@ -334,12 +341,31 @@ class _submit_report_pageState extends State<submit_report_page>
         } else {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => selfie_page(
-                      mobile: mobile.text,
-                      camera: cam,
-                    )),
-          );
+          //   MaterialPageRoute(
+          //       builder: (context) => selfie_page(
+          //             mobile: mobile.text,
+          //             camera: cam,
+          //           )),
+          // );
+          PageRouteBuilder(pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>selfie_page(mobile: mobile.text, camera: cam),
+        transitionsBuilder:(context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        final tween = Tween(begin: begin, end: end);
+        final curvedAnimation = CurvedAnimation(
+        parent: animation,
+        curve: curve,
+        );
+
+        return SlideTransition(
+        position: tween.animate(curvedAnimation),
+        child: child,
+        );
+        }
+
+        ));
         }
       },
       child: Icon(Icons.camera_alt_outlined,size: 30,),
