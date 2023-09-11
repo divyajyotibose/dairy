@@ -227,76 +227,78 @@ class _submit_report_pageState extends State<submit_report_page>
     global_var.context = context;
     return Container(
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-          child: Container(
-            height: global_var.height * 0.7,
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: AppStyle.contentColor,
-                    blurRadius: 10,
-                  )
-                ],
-                color: AppStyle.bodyColor,
-                borderRadius: const BorderRadius.all(Radius.circular(20))),
-            padding: EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: global_var.width * 0.15),
-            child: Center(
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  form_inputs(
-                      controller: name,
-                      label_text: "Name",
-                      hint_text: "Enter your name",
-                      pre_icon: const Icon(Icons.person)),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  form_inputs(
-                      controller: email,
-                      label_text: "Email id",
-                      hint_text: "Enter your email id",
-                      pre_icon: const Icon(Icons.mail)),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Theme(
-                    data: ThemeData(
-                      textSelectionTheme: TextSelectionThemeData(
-                        cursorColor: AppStyle.contentColor
+        child: Container(
+          height: global_var.height * 0.7,
+          margin: EdgeInsets.symmetric(horizontal: 20,vertical: 0),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/submit.png"),
+              fit: BoxFit.fill
+            ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppStyle.contentColor,
+                  blurRadius: 10,
+                )
+              ],
+              color: AppStyle.bodyColor,
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+          padding: EdgeInsets.symmetric(
+              vertical: 0,
+              horizontal: global_var.width * 0.15),
+          child: Center(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                form_inputs(
+                    controller: name,
+                    label_text: "Name",
+                    hint_text: "Enter your name",
+                    pre_icon: const Icon(Icons.person)),
+                const SizedBox(
+                  height: 10,
+                ),
+                form_inputs(
+                    controller: email,
+                    label_text: "Email id",
+                    hint_text: "Enter your email id",
+                    pre_icon: const Icon(Icons.mail)),
+                const SizedBox(
+                  height: 10,
+                ),
+                Theme(
+                  data: ThemeData(
+                    textSelectionTheme: TextSelectionThemeData(
+                      cursorColor: AppStyle.contentColor
+                    ),
+                    inputDecorationTheme: InputDecorationTheme(
+                      suffixIconColor: AppStyle.mainColor,
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppStyle.mainColor),
                       ),
-                      inputDecorationTheme: InputDecorationTheme(
-                        suffixIconColor: AppStyle.mainColor,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppStyle.mainColor),
-                        ),
-                      )
-                    ),
-                    child: PhoneFieldHint(
-                      controller: mobile,
-                    ),
+                    )
                   ),
-                  SizedBox(
-                    height: 10,
+                  child: PhoneFieldHint(
+                    controller: mobile,
                   ),
-                  selection_menu(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  description_box(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  take_photo(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  usefulButton(fn: send_data, label: "Submit"),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                selection_menu(),
+                const SizedBox(
+                  height: 10,
+                ),
+                description_box(),
+                const SizedBox(
+                  height: 10,
+                ),
+                take_photo(),
+                SizedBox(
+                  height: 10,
+                ),
+                usefulButton(fn: send_data, label: "Submit"),
+              ],
             ),
           ),
         ),

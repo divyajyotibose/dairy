@@ -17,7 +17,13 @@ class _home_screenState extends State<home_screen> {
   @override
   Widget build(BuildContext context) {
     return   Container(
-      color: Colors.red,
+      child: Column(
+        children: [
+          Icon(Icons.history),
+
+        ],
+      ),
+      
           );
   }
 }
