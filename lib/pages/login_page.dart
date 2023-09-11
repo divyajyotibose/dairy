@@ -75,6 +75,10 @@ class _login_pageState extends State<login_page> {
         height: global_var.height * 0.65,
         decoration: BoxDecoration(
             // border: Border.all(width: 15, color: color_palette().form_border),
+          image: DecorationImage(
+            image: AssetImage("assets/images/login.png"),
+            fit: BoxFit.fill
+          ),
             boxShadow: [
               BoxShadow(
                 color:AppStyle.contentColor,

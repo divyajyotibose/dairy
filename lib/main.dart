@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'widgets/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:dairy/pages/submit_report_page.dart';
+fn(){
+
+}
 Future<void> main() async{
-  Appstyle AppStyle=Appstyle();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
