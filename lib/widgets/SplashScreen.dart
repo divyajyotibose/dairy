@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Navigator.pushReplacement(context, PageRouteBuilder(
         pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>base_screen(),
         transitionsBuilder:(context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.0, 1.0);
+          const begin = Offset(1.0, 0.0);
           const end = Offset.zero;
           const curve = Curves.ease;
 

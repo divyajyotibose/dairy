@@ -5,7 +5,6 @@ import 'package:dairy/pages/view_reports.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/widget_tree.dart';
-import 'home_screen.dart';
 
 class base_screen extends StatefulWidget {
   const base_screen({Key? key}) : super(key: key);
@@ -19,18 +18,13 @@ class _base_screenState extends State<base_screen> {
   int _selectedIndex = 0;
   var page;
   change_pages(currentIndex) {
+
     if (currentIndex == 0) {
-      page = const home_screen();
-      setState(() {
-        _selectedIndex = currentIndex;
-      });
-    }
-    if (currentIndex == 1) {
       page = const submit_report_page();
       setState(() {
         _selectedIndex = currentIndex;
       });
-    } else if (currentIndex == 2 && _selectedIndex!=2) {
+    } else if (currentIndex == 1 && _selectedIndex!=1) {
       CoolAlert.show(
         context: context,
         type: CoolAlertType.warning,
@@ -60,7 +54,7 @@ class _base_screenState extends State<base_screen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    page = home_screen();
+    page = submit_report_page();
   }
 
   @override
@@ -91,7 +85,6 @@ class _base_screenState extends State<base_screen> {
           selectedItemColor: AppStyle.contentColor,
           unselectedItemColor: AppStyle.bodyColor,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.report_gmailerrorred), label: "Report"),
             BottomNavigationBarItem(

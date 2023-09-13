@@ -8,6 +8,8 @@ import 'package:dairy/global_var.dart';
 import 'package:dairy/pages/submit_report_page.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
+import 'imagePreview.dart';
 class selfie_page extends StatefulWidget {
   String mobile;
   final CameraDescription?  camera;
@@ -58,8 +60,8 @@ class _selfie_pageState extends State<selfie_page> {
           // If an error occurs, log the error to the console.
           print(e);
         }
-      }, child: Center(child: Icon(Icons.motion_photos_on_rounded,size: global_var.ratio*28,color: AppStyle.mainColor,)),
-      backgroundColor: AppStyle.accentColor,
+      }, child: Center(child: Icon(Icons.motion_photos_on_rounded,size: global_var.ratio*28,color: AppStyle.accentColor,)),
+      backgroundColor: AppStyle.mainColor,
       ),
 
     );
@@ -82,7 +84,6 @@ class _selfie_pageState extends State<selfie_page> {
                         child: CameraPreview(_cam,),
                       )),
                   photo_button(),
-                  backButton(),
 
                 ],
               );
@@ -96,17 +97,17 @@ class _selfie_pageState extends State<selfie_page> {
   }
 
   update()async{
-    CoolAlert.show(
-      context: context,
-      type: CoolAlertType.success,
-      width:20.0,
-      text: "Selfie taken successfully",
-      confirmBtnColor: AppStyle.mainColor,
-      confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
-      backgroundColor: AppStyle.accentColor,
-      titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
-      textTextStyle: TextStyle(color: AppStyle.contentColor),
-    );
+    // CoolAlert.show(
+    //   context: context,
+    //   type: CoolAlertType.success,
+    //   width:20.0,
+    //   text: "Selfie taken successfully",
+    //   confirmBtnColor: AppStyle.mainColor,
+    //   confirmBtnTextStyle: TextStyle(color: AppStyle.contentColor),
+    //   backgroundColor: AppStyle.accentColor,
+    //   titleTextStyle: TextStyle(color: AppStyle.contentColor,fontWeight: FontWeight.bold,fontSize: 20),
+    //   textTextStyle: TextStyle(color: AppStyle.contentColor),
+    // );
 
     setState(() {
       final file=File(image.path!);
@@ -114,22 +115,29 @@ class _selfie_pageState extends State<selfie_page> {
       final reference=FirebaseStorage.instance.ref().child(path);
       reference.putFile(file);
     });
+    Navigator.push(context, PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>imagePreview(image: image,),
+        transitionsBuilder:(context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
 
+          final tween = Tween(begin: begin, end: end);
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: curve,
+          );
 
-  }
-
-  backButton() {
-    return Positioned(
-        bottom: global_var.ratio*30,
-        left: 20,
-        child:FloatingActionButton(
-          heroTag: "btn1",
-          backgroundColor: AppStyle.accentColor,
-          onPressed: (){
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.arrow_back,color: AppStyle.mainColor,size: 30,),
-        )
+          return SlideTransition(
+            position: tween.animate(curvedAnimation),
+            child: child,
+          );
+        },
+        transitionDuration: Duration(milliseconds: 300)
+    )
     );
+
   }
+
+
 }
