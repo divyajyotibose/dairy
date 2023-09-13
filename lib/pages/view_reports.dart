@@ -147,6 +147,7 @@ class _view_reportsState extends State<view_reports> {
     double lat = a["latitude"];
     double lng = a["longitude"];
     String type = a["type"];
+    String disaster=a["disaster"];
     String details = a["details"];
     String ph = a["ph"];
     String time=a["Time"];
@@ -191,6 +192,7 @@ class _view_reportsState extends State<view_reports> {
             report_lines("Latitude", lat),
             report_lines("Longitude", lng),
             report_lines("Type of Incdient", type),
+            report_lines("The Incident", disaster),
             report_lines("Description", details),
           ],
         ),

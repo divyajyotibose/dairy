@@ -32,18 +32,33 @@ class _submit_report_pageState extends State<submit_report_page>
   TextEditingController email = TextEditingController();
   TextEditingController details = TextEditingController();
   TextEditingController mobile = TextEditingController();
-
+  bool isDisabled=true;
   CollectionReference collRef = FirebaseFirestore.instance.collection("client");
   CollectionReference backref =
       FirebaseFirestore.instance.collection("backend");
   late AnimationController _controller;
   late Animation<double> animation;
-  List listItem = [
-    "Selection a disaster type",
+  List listItem2 = [
     "Tornado",
     "Flood",
-    "Earthquake"
+    "Earthquake",
+    "Landslide",
+    "Hurricane",
+    "Tsunami",
+    "Volcanic eruption"
   ];
+  List listItem1 = [
+    "Bioterrorism",
+    "Civil unrest",
+    "Hazardous material spills",
+    "Nuclear and radiation accidents",
+
+  ];
+  List category=[
+    "Natural",
+    "Manmade"
+  ];
+
   String messageTitle = "Empty";
   String notificationAlert = "alert";
   String? fcmToken;
@@ -51,13 +66,16 @@ class _submit_report_pageState extends State<submit_report_page>
   CameraDescription? cam;
   var image;
 
-  String? ip, valueChoose,date,time;
+  String? ip,date,time,dtype;
+  String? valueChoose;
+  List listItem=[];
   Future<void> send_data() async {
     if (name.text == "" ||
         email.text == "" ||
         details.text == "" ||
         mobile.text == "" ||
-        valueChoose == listItem[0]) {
+        valueChoose == ""||
+    dtype=="") {
       CoolAlert.show(
           context: context,
           type: CoolAlertType.warning,
@@ -75,7 +93,8 @@ class _submit_report_pageState extends State<submit_report_page>
         "name": name.text,
         "email": email.text,
         "details": details.text,
-        "type": valueChoose,
+        "type": dtype,
+        "disaster":valueChoose,
         "ip": ip,
         "Time": time,
         "Date":date,
@@ -100,6 +119,8 @@ class _submit_report_pageState extends State<submit_report_page>
           email.text = "";
           details.text = "";
           mobile.text = "";
+          dtype="";
+          valueChoose="";
         });
         await backref.doc("reportCount").update({
           "alerts": FieldValue.increment(1),
@@ -119,15 +140,34 @@ class _submit_report_pageState extends State<submit_report_page>
         isExpanded: true,
         icon: Icon(Icons.arrow_drop_down,color: AppStyle.mainColor,),
         dropdownColor: AppStyle.bodyColor,
-        onChanged: (newValue) {
-          setState(() {
-            valueChoose = newValue.toString();
-          });
-        },
-        items: listItem.map((valueItem) {
+        onChanged: isDisabled?null:(newValue)=>selectValue(newValue),
+        items: listItem.isNotEmpty?listItem.map<DropdownMenuItem<Object>>((valueItem) {
+          return DropdownMenuItem(value: valueItem, child: Text(valueItem,style: TextStyle(color: AppStyle.contentColor),));
+        }).toList():null,
+        underline: SizedBox(),
+        hint: Text("Select the occurred disaster"),
+        disabledHint: Text("Please select a category first"),
+
+      ),
+    );
+  }
+  Widget disaster_select() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+      decoration: BoxDecoration(
+          border: Border.all(
+              color: AppStyle.mainColor, width: AppStyle.borderWidth)),
+      child: DropdownButton(
+        value: dtype,
+        isExpanded: true,
+        icon: Icon(Icons.arrow_drop_down,color: AppStyle.mainColor,),
+        dropdownColor: AppStyle.bodyColor,
+        onChanged: (newValue) =>valueChange(newValue),
+        items: category.map<DropdownMenuItem<Object>>((valueItem) {
           return DropdownMenuItem(value: valueItem, child: Text(valueItem,style: TextStyle(color: AppStyle.contentColor),));
         }).toList(),
         underline: SizedBox(),
+        hint: Text("Select a category"),
       ),
     );
   }
@@ -197,7 +237,7 @@ class _submit_report_pageState extends State<submit_report_page>
     _getCurrentPosition();
     init();
     get_cam();
-    valueChoose = listItem[0];
+
     local_notifs().initNotifications();
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 2))
@@ -227,81 +267,78 @@ class _submit_report_pageState extends State<submit_report_page>
     global_var.context = context;
     return Scaffold(
       backgroundColor: AppStyle.accentColor,
-      body: Container(
-        child: Center(
-          child: Container(
-            height: global_var.height * 0.7,
-            margin: EdgeInsets.symmetric(horizontal: 20,vertical: 0),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/submit.png"),
-                fit: BoxFit.fill
-              ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppStyle.contentColor,
-                    blurRadius: 10,
-                  )
-                ],
-                color: AppStyle.bodyColor,
-                borderRadius: const BorderRadius.all(Radius.circular(20))),
-            padding: EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: global_var.width * 0.15),
-            child: Center(
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  form_inputs(
-                      controller: name,
-                      label_text: "Name",
-                      hint_text: "Enter your name",
-                      pre_icon: const Icon(Icons.person)),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  form_inputs(
-                      controller: email,
-                      label_text: "Email id",
-                      hint_text: "Enter your email id",
-                      pre_icon: const Icon(Icons.mail)),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Theme(
-                    data: ThemeData(
-                      textSelectionTheme: TextSelectionThemeData(
-                        cursorColor: AppStyle.contentColor
+      body: Center(
+        child: Container(
+          height: global_var.height * 0.75,
+          margin: EdgeInsets.symmetric(horizontal: 20,vertical: 0),
+          decoration: BoxDecoration(
+
+              boxShadow: [
+                BoxShadow(
+                  color: AppStyle.contentColor,
+                  blurRadius: 10,
+                )
+              ],
+              color: AppStyle.bodyColor,
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+          padding: EdgeInsets.symmetric(
+              vertical: 0,
+              horizontal: global_var.width * 0.15),
+          child: Center(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                form_inputs(
+                    controller: name,
+                    label_text: "Name",
+                    hint_text: "Enter your name",
+                    pre_icon: const Icon(Icons.person)),
+                const SizedBox(
+                  height: 10,
+                ),
+                form_inputs(
+                    controller: email,
+                    label_text: "Email id",
+                    hint_text: "Enter your email id",
+                    pre_icon: const Icon(Icons.mail)),
+                const SizedBox(
+                  height: 10,
+                ),
+                Theme(
+                  data: ThemeData(
+                    textSelectionTheme: TextSelectionThemeData(
+                      cursorColor: AppStyle.contentColor
+                    ),
+                    inputDecorationTheme: InputDecorationTheme(
+                      suffixIconColor: AppStyle.contentColor,
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppStyle.mainColor),
                       ),
-                      inputDecorationTheme: InputDecorationTheme(
-                        suffixIconColor: AppStyle.mainColor,
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppStyle.mainColor),
-                        ),
-                      )
-                    ),
-                    child: PhoneFieldHint(
-                      controller: mobile,
-                    ),
+                    )
                   ),
-                  SizedBox(
-                    height: 10,
+                  child: PhoneFieldHint(
+                    controller: mobile,
                   ),
-                  selection_menu(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  description_box(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  take_photo(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  usefulButton(fn: send_data, label: "Submit"),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                disaster_select(),
+                SizedBox(height: 10,),
+                selection_menu(),
+                const SizedBox(
+                  height: 10,
+                ),
+                description_box(),
+                const SizedBox(
+                  height: 10,
+                ),
+                take_photo(),
+                SizedBox(
+                  height: 10,
+                ),
+                usefulButton(fn: send_data, label: "Submit"),
+              ],
             ),
           ),
         ),
@@ -346,12 +383,6 @@ class _submit_report_pageState extends State<submit_report_page>
         } else {
           Navigator.push(
             context,
-          //   MaterialPageRoute(
-          //       builder: (context) => selfie_page(
-          //             mobile: mobile.text,
-          //             camera: cam,
-          //           )),
-          // );
           PageRouteBuilder(pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>selfie_page(mobile: mobile.text, camera: cam),
         transitionsBuilder:(context, animation, secondaryAnimation, child) {
         const begin = Offset(1.0, 0.0);
@@ -384,5 +415,26 @@ class _submit_report_pageState extends State<submit_report_page>
   get_cam() async {
     cameras = await availableCameras();
     cam = cameras![1];
+  }
+
+  valueChange(Object? newValue) {
+
+      setState(() {
+        if(dtype==category[0]) {
+          listItem = listItem2;
+        }
+        else{
+          listItem=listItem1;
+        }
+        dtype=newValue.toString();
+        isDisabled=false;
+      });
+
+  }
+
+  selectValue(Object? newValue) {
+    setState(() {
+      valueChoose=newValue.toString();
+    });
   }
 }

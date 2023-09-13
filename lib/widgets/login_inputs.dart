@@ -30,7 +30,7 @@ class login_inputs extends StatelessWidget {
         hintText: hint_text,
         hintStyle: TextStyle(color: AppStyle.mainColor),
         prefixIcon: pre_icon,
-        prefixIconColor: AppStyle.mainColor,
+        prefixIconColor: AppStyle.contentColor,
         enabledBorder: OutlineInputBorder(
           borderSide: Appstyle().borderSide,
         ),

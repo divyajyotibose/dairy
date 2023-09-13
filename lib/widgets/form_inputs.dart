@@ -33,7 +33,7 @@ class form_inputs extends StatelessWidget {
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: AppStyle.mainColor),
           ),
-          prefixIconColor: AppStyle.mainColor,
+          prefixIconColor: AppStyle.contentColor,
         ),
       ),
     );
