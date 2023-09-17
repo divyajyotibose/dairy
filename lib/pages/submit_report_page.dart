@@ -4,6 +4,7 @@ import 'package:animated_check/animated_check.dart';
 import 'package:camera/camera.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/pages/selfie_page.dart';
+import 'package:dairy/widgets/geoLoc.dart';
 import 'package:dairy/widgets/local_notifs.dart';
 import 'package:dairy/widgets/usefulButton.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -28,6 +29,7 @@ class submit_report_page extends StatefulWidget {
 class _submit_report_pageState extends State<submit_report_page>
     with SingleTickerProviderStateMixin {
   Appstyle AppStyle = Appstyle();
+  geoLoc gl=geoLoc();
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController details = TextEditingController();
@@ -66,8 +68,8 @@ class _submit_report_pageState extends State<submit_report_page>
   CameraDescription? cam;
   var image;
 
-  String? ip,date,time,dtype;
-  String? valueChoose;
+  String? ip,date,time;
+  String? valueChoose,dtype;
   List listItem=[];
   Future<void> send_data() async {
     if (name.text == "" ||
@@ -89,7 +91,7 @@ class _submit_report_pageState extends State<submit_report_page>
           textTextStyle: TextStyle(color: AppStyle.contentColor));
     } else {
       get_time();
-      await collRef.doc(mobile.text).set({
+      await collRef.doc(mobile.text).update({
         "name": name.text,
         "email": email.text,
         "details": details.text,
@@ -98,12 +100,11 @@ class _submit_report_pageState extends State<submit_report_page>
         "ip": ip,
         "Time": time,
         "Date":date,
-        "latitude": _currentPosition?.latitude ?? "",
-        "longitude": _currentPosition?.longitude ?? "",
-        "address": _currentAddress ?? "",
+        "latitude": gl.currentPosition?.latitude ?? "",
+        "longitude": gl.currentPosition?.longitude ?? "",
+        "address": gl.currentAddress ?? "",
         "ph": mobile.text
       }).whenComplete(() async {
-        // showDialog(context: context, builder: (_)=>alert_message(title: AnimatedCheck(progress: animation, size: 200,color: Colors.greenAccent,), content: Text("Report Submitted Successfully")));
         CoolAlert.show(
             context: context,
             type: CoolAlertType.success,
@@ -119,8 +120,9 @@ class _submit_report_pageState extends State<submit_report_page>
           email.text = "";
           details.text = "";
           mobile.text = "";
-          dtype="";
-          valueChoose="";
+          dtype=null;
+          valueChoose=null;
+          isDisabled=true;
         });
         await backref.doc("reportCount").update({
           "alerts": FieldValue.increment(1),
@@ -145,7 +147,7 @@ class _submit_report_pageState extends State<submit_report_page>
           return DropdownMenuItem(value: valueItem, child: Text(valueItem,style: TextStyle(color: AppStyle.contentColor),));
         }).toList():null,
         underline: SizedBox(),
-        hint: Text("Select the occurred disaster"),
+        hint: Text("Select a disaster"),
         disabledHint: Text("Please select a category first"),
 
       ),
@@ -172,72 +174,13 @@ class _submit_report_pageState extends State<submit_report_page>
     );
   }
 
-  String? _currentAddress;
-  Position? _currentPosition;
-
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
-      return false;
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
-        return false;
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
-      return false;
-    }
-    return true;
-  }
-
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-      _getAddressFromLatLng(_currentPosition!);
-    }).catchError((e) {
-      debugPrint(e.toString());
-    });
-  }
-
-  Future<void> _getAddressFromLatLng(Position position) async {
-    await placemarkFromCoordinates(
-            _currentPosition!.latitude, _currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _currentAddress =
-            '${place.street}, ${place.subLocality},${place.subAdministrativeArea}, ${place.postalCode}';
-      });
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
-
   @override
   initState() {
     // TODO: implement initState
     super.initState();
-    _getCurrentPosition();
     init();
     get_cam();
-
+    loc();
     local_notifs().initNotifications();
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 2))
@@ -427,6 +370,7 @@ class _submit_report_pageState extends State<submit_report_page>
   valueChange(Object? newValue) {
 
       setState(() {
+        isDisabled=false;
         dtype=newValue.toString();
         if(dtype==category[0]) {
           listItem = listItem2;
@@ -434,7 +378,6 @@ class _submit_report_pageState extends State<submit_report_page>
         else{
           listItem=listItem1;
         }
-        isDisabled=false;
       });
 
   }
@@ -443,5 +386,8 @@ class _submit_report_pageState extends State<submit_report_page>
     setState(() {
       valueChoose=newValue.toString();
     });
+  }
+  loc(){
+    gl.getCurrentPosition1();
   }
 }

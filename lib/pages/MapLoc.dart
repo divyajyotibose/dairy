@@ -1,3 +1,4 @@
+import 'package:dairy/format/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -10,6 +11,7 @@ class MapLoc extends StatefulWidget {
 }
 
 class _MapLocState extends State<MapLoc> {
+  Appstyle AppStyle=Appstyle();
   @override
   Widget build(BuildContext context) {
     LatLng? loc=LatLng(widget.lat,widget.lng);
