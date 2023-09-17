@@ -279,6 +279,7 @@ class _submit_report_pageState extends State<submit_report_page>
                   blurRadius: 10,
                 )
               ],
+              
               color: AppStyle.bodyColor,
               borderRadius: const BorderRadius.all(Radius.circular(20))),
           padding: EdgeInsets.symmetric(
@@ -404,10 +405,16 @@ class _submit_report_pageState extends State<submit_report_page>
         ));
         }
       },
-      child: Icon(Icons.camera_alt_outlined,size: 30,),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Take a selfie ",style: TextStyle(color: AppStyle.contentColor,fontSize: 16),),
+          Icon(Icons.camera_alt_outlined,size: 30,),
+        ],
+      ),
       style: TextButton.styleFrom(
           backgroundColor: AppStyle.mainColor,
-          shape: CircleBorder(),
+          shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           iconColor: AppStyle.contentColor),
     );
   }
@@ -420,13 +427,13 @@ class _submit_report_pageState extends State<submit_report_page>
   valueChange(Object? newValue) {
 
       setState(() {
+        dtype=newValue.toString();
         if(dtype==category[0]) {
           listItem = listItem2;
         }
         else{
           listItem=listItem1;
         }
-        dtype=newValue.toString();
         isDisabled=false;
       });
 

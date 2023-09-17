@@ -11,13 +11,15 @@ class Appstyle {
   BorderSide get borderSide =>
       BorderSide(width: borderWidth, color: accentColor);
 
-  TextStyle normalText = const TextStyle(
+  TextStyle get normalText => TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.normal,
+    color: contentColor
   );
-  TextStyle heavyText = const TextStyle(
+  TextStyle get heavyText => TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.bold,
+    color: contentColor
   );
 }
 

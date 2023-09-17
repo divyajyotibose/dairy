@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/format/color_palette.dart';
 import 'package:dairy/global_var.dart';
+import 'package:dairy/pages/MapLoc.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -194,6 +195,7 @@ class _view_reportsState extends State<view_reports> {
             report_lines("Type of Incdient", type),
             report_lines("The Incident", disaster),
             report_lines("Description", details),
+            user_location(lat,lng),
           ],
         ),
       ),
@@ -238,5 +240,32 @@ class _view_reportsState extends State<view_reports> {
     print(mobile);
     imageURL = await FirebaseStorage.instance.ref().child("files/$mobile").getDownloadURL();
 
+  }
+
+  user_location(lat,lng) {
+    return IconButton(
+        onPressed: (){
+          Navigator.push(context, PageRouteBuilder(
+              pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>MapLoc(lat:lat,lng:lng),
+              transitionsBuilder:(context, animation, secondaryAnimation, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                );
+
+                return SlideTransition(
+                  position: tween.animate(curvedAnimation),
+                  child: child,
+                );
+              },
+              transitionDuration: Duration(milliseconds: 300)
+          )
+          );
+    }, icon: Icon(Icons.map_rounded,size: 50,color: AppStyle.contentColor,));
   }
 }
