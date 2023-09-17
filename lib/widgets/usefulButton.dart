@@ -11,12 +11,12 @@ class usefulButton extends StatelessWidget {
       onPressed: fn,
       child: Text(
         label,
-        style: TextStyle(color: AppStyle.contentColor, fontSize: 18),
+        style: TextStyle(color: AppStyle.contentColor, fontSize: 16),
       ),
       style: ElevatedButton.styleFrom(
           backgroundColor: AppStyle.mainColor,
           shape: StadiumBorder(),
-          padding: EdgeInsets.all(15)),
+          padding: EdgeInsets.all(12)),
     );
 
   }

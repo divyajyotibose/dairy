@@ -149,6 +149,7 @@ class _view_reportsState extends State<view_reports> {
     double lng = a["longitude"];
     String type = a["type"];
     String disaster=a["disaster"];
+    String cause = a["cause"];
     String details = a["details"];
     String ph = a["ph"];
     String time=a["Time"];
@@ -158,7 +159,7 @@ class _view_reportsState extends State<view_reports> {
       padding: EdgeInsets.symmetric(
           vertical: global_var.height * 0.05,
           horizontal: global_var.width * 0.08),
-      height: global_var.height * 0.7,
+      height: global_var.height * 0.75,
       decoration: BoxDecoration(
           color: AppStyle.bodyColor,
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -195,6 +196,7 @@ class _view_reportsState extends State<view_reports> {
             report_lines("Type of Incdient", type),
             report_lines("The Incident", disaster),
             report_lines("Description", details),
+            report_lines("Cause", cause),
             user_location(lat,lng),
           ],
         ),

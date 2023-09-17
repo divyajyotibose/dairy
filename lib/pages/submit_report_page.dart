@@ -34,6 +34,8 @@ class _submit_report_pageState extends State<submit_report_page>
   TextEditingController email = TextEditingController();
   TextEditingController details = TextEditingController();
   TextEditingController mobile = TextEditingController();
+  TextEditingController cause = TextEditingController();
+
   bool isDisabled=true;
   CollectionReference collRef = FirebaseFirestore.instance.collection("client");
   CollectionReference backref =
@@ -91,9 +93,10 @@ class _submit_report_pageState extends State<submit_report_page>
           textTextStyle: TextStyle(color: AppStyle.contentColor));
     } else {
       get_time();
-      await collRef.doc(mobile.text).update({
+      await collRef.doc(mobile.text).set({
         "name": name.text,
         "email": email.text,
+        "cause":cause.text,
         "details": details.text,
         "type": dtype,
         "disaster":valueChoose,
@@ -212,8 +215,7 @@ class _submit_report_pageState extends State<submit_report_page>
       backgroundColor: AppStyle.accentColor,
       body: Center(
         child: Container(
-          height: global_var.height * 0.75,
-          margin: EdgeInsets.symmetric(horizontal: 20,vertical: 0),
+          margin: EdgeInsets.symmetric(horizontal: 20,vertical: global_var.height*0.047),
           decoration: BoxDecoration(
 
               boxShadow: [
@@ -270,10 +272,12 @@ class _submit_report_pageState extends State<submit_report_page>
                 disaster_select(),
                 SizedBox(height: 10,),
                 selection_menu(),
+
+                description_box("Cause","Cause of incident",cause),
                 const SizedBox(
                   height: 10,
                 ),
-                description_box(),
+                description_box("Description","Please describe the incident",details),
                 const SizedBox(
                   height: 10,
                 ),
@@ -290,13 +294,13 @@ class _submit_report_pageState extends State<submit_report_page>
     );
   }
 
-  description_box() {
+  description_box(label,hint,ctr) {
     return SingleChildScrollView(
       child: SizedBox(
         child: form_inputs(
-          controller: details,
-          label_text: "Description",
-          hint_text: "Please describe the incident",
+          controller: ctr,
+          label_text: label,
+          hint_text: hint,
           pre_icon: const Icon(Icons.description),
         ),
       ),
