@@ -218,6 +218,12 @@ class _submit_report_pageState extends State<submit_report_page>
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 20,vertical: global_var.height*0.047),
           decoration: BoxDecoration(
+            // image: DecorationImage(
+            //     image: AssetImage("assets/images/submit1.jpeg"),
+            //   fit: BoxFit.fill,
+            //   opacity: 0.3
+            //
+            // ),
 
               boxShadow: [
                 BoxShadow(

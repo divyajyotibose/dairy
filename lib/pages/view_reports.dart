@@ -199,6 +199,7 @@ class _view_reportsState extends State<view_reports> {
             report_lines("The Incident", disaster),
             report_lines("Description", details),
             report_lines("Cause", cause),
+            SizedBox(height: 10,),
             user_location(lat,lng),
           ],
         ),
@@ -247,10 +248,12 @@ class _view_reportsState extends State<view_reports> {
   }
 
   user_location(lat,lng) {
-    return IconButton(
+    return FloatingActionButton(
         onPressed: (){
           Navigator.push(context, pageAnimation().getAnimation(MapLoc(lat:lat,lng:lng))
           );
-    }, icon: Icon(Icons.map_rounded,size: 50,color: AppStyle.contentColor,));
+    }, child: Icon(Icons.map_rounded,size: 40,color: AppStyle.bodyColor,),
+    backgroundColor: AppStyle.mainColor,
+    );
   }
 }
