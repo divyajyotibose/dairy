@@ -1,4 +1,4 @@
-# dairy
+# Dairy
 
 A new Flutter project.
 
