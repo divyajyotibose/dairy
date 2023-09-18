@@ -6,6 +6,7 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/format/color_palette.dart';
 import 'package:dairy/global_var.dart';
 import 'package:dairy/pages/submit_report_page.dart';
+import 'package:dairy/widgets/pageAnimation.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -69,6 +70,7 @@ class _selfie_pageState extends State<selfie_page> {
 
   @override
   Widget build(BuildContext context) {
+    global_var.context=context;
     return Scaffold(
       body: FutureBuilder(
           future: _initializeControllerFuture,
@@ -109,32 +111,7 @@ class _selfie_pageState extends State<selfie_page> {
     //   textTextStyle: TextStyle(color: AppStyle.contentColor),
     // );
 
-    setState(() {
-      final file=File(image.path!);
-      final path="files/${widget.mobile}";
-      final reference=FirebaseStorage.instance.ref().child(path);
-      reference.putFile(file);
-    });
-    Navigator.push(context, PageRouteBuilder(
-        pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>imagePreview(image: image,),
-        transitionsBuilder:(context, animation, secondaryAnimation, child) {
-          const begin = Offset(1.0, 0.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
-
-          final tween = Tween(begin: begin, end: end);
-          final curvedAnimation = CurvedAnimation(
-            parent: animation,
-            curve: curve,
-          );
-
-          return SlideTransition(
-            position: tween.animate(curvedAnimation),
-            child: child,
-          );
-        },
-        transitionDuration: Duration(milliseconds: 300)
-    )
+    Navigator.push(context, pageAnimation().getAnimation(imagePreview(image: image,mobile:widget.mobile))
     );
 
   }

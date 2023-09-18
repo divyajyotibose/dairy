@@ -1,11 +1,13 @@
 import 'package:dairy/format/color_palette.dart';
 import 'package:dairy/global_var.dart';
 import 'package:dairy/pages/submit_report_page.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 class imagePreview extends StatelessWidget {
   final image;
-  imagePreview({Key? key, this.image}) : super(key: key);
+  final String mobile;
+  imagePreview({Key? key, this.image, required this.mobile}) : super(key: key);
   Appstyle AppStyle= Appstyle();
 
   Widget Preview(){
@@ -35,6 +37,10 @@ class imagePreview extends StatelessWidget {
         FloatingActionButton(
           backgroundColor:AppStyle.mainColor,
           onPressed: (){
+              final file=File(image.path!);
+              final path="files/$mobile";
+              final reference=FirebaseStorage.instance.ref().child(path);
+              reference.putFile(file);
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= 2);
         },
@@ -59,7 +65,7 @@ class imagePreview extends StatelessWidget {
             )),
           child: Stack(
             children: [Positioned(
-              bottom: 30,
+              bottom: global_var.height*0.055,
               left: global_var.width*0.15,
               right: global_var.width*0.15,
               child:actions(context),

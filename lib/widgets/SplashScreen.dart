@@ -1,5 +1,6 @@
 import 'package:dairy/format/color_palette.dart';
 import 'package:dairy/pages/base_screen.dart';
+import 'package:dairy/widgets/pageAnimation.dart';
 import 'package:flutter/material.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,26 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Appstyle AppStyle=Appstyle();
   futureScreen()async{
     await Future.delayed(Duration(seconds: 3),);
-    Navigator.pushReplacement(context, PageRouteBuilder(
-        pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>base_screen(),
-        transitionsBuilder:(context, animation, secondaryAnimation, child) {
-          const begin = Offset(1.0, 0.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
-
-          final tween = Tween(begin: begin, end: end);
-          final curvedAnimation = CurvedAnimation(
-            parent: animation,
-            curve: curve,
-          );
-
-          return SlideTransition(
-            position: tween.animate(curvedAnimation),
-            child: child,
-          );
-        },
-      transitionDuration: Duration(milliseconds: 300)
-    )
+    Navigator.pushReplacement(context, pageAnimation().getAnimation(base_screen())
     );
 
 }

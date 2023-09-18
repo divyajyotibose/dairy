@@ -6,6 +6,7 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/pages/selfie_page.dart';
 import 'package:dairy/widgets/geoLoc.dart';
 import 'package:dairy/widgets/local_notifs.dart';
+import 'package:dairy/widgets/pageAnimation.dart';
 import 'package:dairy/widgets/usefulButton.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -331,25 +332,8 @@ class _submit_report_pageState extends State<submit_report_page>
         } else {
           Navigator.push(
             context,
-          PageRouteBuilder(pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>selfie_page(mobile: mobile.text, camera: cam),
-        transitionsBuilder:(context, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        final tween = Tween(begin: begin, end: end);
-        final curvedAnimation = CurvedAnimation(
-        parent: animation,
-        curve: curve,
-        );
-
-        return SlideTransition(
-        position: tween.animate(curvedAnimation),
-        child: child,
-        );
-        }
-
-        ));
+          pageAnimation().getAnimation(selfie_page(mobile: mobile.text, camera: cam))
+          );
         }
       },
       child: Row(
