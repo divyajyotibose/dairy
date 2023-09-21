@@ -1,7 +1,7 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/format/color_palette.dart';
+import 'package:dairy/pages/homePage.dart';
 import 'package:dairy/pages/submit_report_page.dart';
-import 'package:dairy/pages/view_reports.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/widget_tree.dart';
@@ -20,11 +20,18 @@ class _base_screenState extends State<base_screen> {
   change_pages(currentIndex) {
 
     if (currentIndex == 0) {
+      page = const homePage();
+      setState(() {
+        _selectedIndex = currentIndex;
+      });
+    }
+    else if (currentIndex == 1) {
       page = const submit_report_page();
       setState(() {
         _selectedIndex = currentIndex;
       });
-    } else if (currentIndex == 1 && _selectedIndex!=1) {
+    }
+    else if (currentIndex == 2 && _selectedIndex!=2) {
       CoolAlert.show(
         context: context,
         type: CoolAlertType.warning,
@@ -54,7 +61,7 @@ class _base_screenState extends State<base_screen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    page = submit_report_page();
+    page = const homePage();
   }
 
   @override
@@ -64,7 +71,7 @@ class _base_screenState extends State<base_screen> {
         child: Container(
           color: AppStyle.accentColor,
           child: AnimatedSwitcher(
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               child: page,
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return SlideTransition(
@@ -85,6 +92,8 @@ class _base_screenState extends State<base_screen> {
           selectedItemColor: AppStyle.contentColor,
           unselectedItemColor: AppStyle.bodyColor,
           items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.report_gmailerrorred), label: "Report"),
             BottomNavigationBarItem(

@@ -1,18 +1,15 @@
 import 'dart:typed_data';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/format/color_palette.dart';
 import 'package:dairy/global_var.dart';
 import 'package:dairy/pages/MapLoc.dart';
-import 'package:dairy/pages/imagePreview.dart';
 import 'package:dairy/widgets/pageAnimation.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dairy/widgets/auth.dart';
-import 'package:dairy/widgets/local_notifs.dart';
 
 class view_reports extends StatefulWidget {
   const view_reports({Key? key}) : super(key: key);

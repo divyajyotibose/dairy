@@ -1,6 +1,4 @@
 import 'dart:ui';
-import 'dart:io';
-import 'package:animated_check/animated_check.dart';
 import 'package:camera/camera.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/pages/selfie_page.dart';
@@ -8,8 +6,6 @@ import 'package:dairy/widgets/geoLoc.dart';
 import 'package:dairy/widgets/local_notifs.dart';
 import 'package:dairy/widgets/pageAnimation.dart';
 import 'package:dairy/widgets/usefulButton.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:dairy/global_var.dart';
@@ -17,8 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:dairy/format/color_palette.dart';
 import '../widgets/form_inputs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 
 class submit_report_page extends StatefulWidget {
   const submit_report_page({Key? key}) : super(key: key);
