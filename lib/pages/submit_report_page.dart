@@ -1,9 +1,7 @@
-import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:dairy/pages/selfie_page.dart';
 import 'package:dairy/widgets/geoLoc.dart';
-import 'package:dairy/widgets/local_notifs.dart';
 import 'package:dairy/widgets/pageAnimation.dart';
 import 'package:dairy/widgets/usefulButton.dart';
 import 'package:intl/intl.dart';
@@ -179,7 +177,6 @@ class _submit_report_pageState extends State<submit_report_page>
     init();
     get_cam();
     loc();
-    local_notifs().initNotifications();
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 2))
           ..forward()
@@ -356,7 +353,6 @@ class _submit_report_pageState extends State<submit_report_page>
   }
 
   valueChange(Object? newValue) {
-
       setState(() {
         isDisabled=false;
         dtype=newValue.toString();
