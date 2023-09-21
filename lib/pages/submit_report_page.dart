@@ -98,8 +98,8 @@ class _submit_report_pageState extends State<submit_report_page>
         "ip": ip,
         "Time": time,
         "Date":date,
-        "latitude": gl.currentPosition?.latitude ?? "",
-        "longitude": gl.currentPosition?.longitude ?? "",
+        "latitude": gl.currentPosition?.latitude ?? 0.0,
+        "longitude": gl.currentPosition?.longitude ??0.0,
         "address": gl.currentAddress ?? "",
         "ph": mobile.text
       }).whenComplete(() async {
