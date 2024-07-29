@@ -7,4 +7,3 @@ Disaster Assistance and Incident Reporting by You
 - This authorities will swiftly take action based on the nature of report.
 - The app stores your image and location so as to easily identify where to send the assistance.
 
-   # Please do try it out!!
